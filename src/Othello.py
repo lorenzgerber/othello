@@ -1,5 +1,7 @@
-from OthelloAlgorithm import OthelloAlgorithm, MiniMaxAlgorithm
-from OthelloEvaluator import OthelloEvaluator, StabilityCornerEvaluator
+from MiniMaxAlgorithm import MiniMaxAlgorithm
+from CountingEvaluator import CountingEvaluator
+from OthelloAction import OthelloAction
+from OthelloPosition import OthelloPosition
 from sys import argv
 
 def main():
@@ -8,19 +10,14 @@ def main():
     if (len(argv) != 3):
         print("Usage: Othello.py <gameState> <time limit>")
     
-    othello_position = argv[1]
+    position = OthelloPosition(argv[1])
 
-    evaluator = StabilityCornerEvaluator()
+    evaluator = CountingEvaluator()
     algorithm = MiniMaxAlgorithm()
-    algorithm.set_evaluator(evaluator)
-    algorithm.evaluate(othello_position)
+    algorithm.set_evaluator(CountingEvaluator())
+    action = algorithm.evaluate(position)
 
-
-
-
-
-
-
+    return (action)
 
 
 if __name__ == "__main__":
