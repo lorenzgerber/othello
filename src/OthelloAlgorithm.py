@@ -38,3 +38,15 @@ class OthelloAlgorithm(ABC):
         :return: Nothing
         """
         pass
+
+class MiniMaxAlgorithm(OthelloAlgorithm):
+    
+    def set_evaluator(self, othello_evaluator):
+        print("I have set the othello_evaluator")
+
+    def evaluate(self, othello_position):
+        print("evaluating")
+
+    def set_search_depth(self, depth):
+        print("set the depth")
+

@@ -19,3 +19,9 @@ class OthelloEvaluator(ABC):
         :return: An integer representing a heuristic evaluation of the position
         """
         pass
+
+
+class StabilityCornerEvaluator(OthelloEvaluator):
+
+    def evaluate(self, othello_position):
+        print("I'm the new evaluator")
