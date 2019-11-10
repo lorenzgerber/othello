@@ -1,5 +1,6 @@
 from OthelloAlgorithm import OthelloAlgorithm
 from OthelloAction import OthelloAction
+from math import inf
 
 class MiniMaxAlgorithm(OthelloAlgorithm):
 
@@ -18,10 +19,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         # Here comes the MiniMax algorithm that will
         # call for the self.evaluator.evaluate to get
         # the heuristic
-
-        
-
-        heuristic = self.evaluator.evaluate(self.start_position)
+        heuristic = self.max_value( self.start_position, -inf, +inf)
 
         # the immediate next move from current othello_position 
         # that resulted in the best heuristic shall be returned
@@ -35,8 +33,45 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         print("set the depth")
 
 
-    def max_value(self):
+    def max_value(self, othello_position, alpha, beta):
         print("max value")
+        
+        # if s is a leaf then (othello board is full)
+        if (othello_position.check_is_leaf()):
+            print('report utility')
+            self.evaluator.evaluate.self(othello_position)
+        
+        value = -inf
+        
+        for child_move in othello_position.get_moves():
+            new_position = othello_position.clone()
+            new_position.make_move(child_move)
+            value = max(value, self.min_value(new_position, alpha, beta))
+            alpha = max(alpha, value)
+            if alpha >= beta:
+                # beta cutoff
+                break
+        
+        return ( value )
 
-    def min_value(self):
+
+    def min_value(self, othello_position, alpha, beta):
         print("min value")
+        
+        # if s is a leaf then (othello board is full)
+        if (othello_position.check_is_leaf()):
+            print('report utility')
+            self.evaluator.evaluate.self(othello_position)
+
+        value = +inf
+        
+        for child_move in othello_position.get_moves():
+            new_position = othello_position.clone()
+            new_position.make_move(child_move)
+            value = min(value, self.max_value(new_position, alpha, beta))
+            alpha = min(alpha, value)
+            if alpha >= beta:
+                # alpha cutoff
+                break
+        
+        return ( value )

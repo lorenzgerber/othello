@@ -53,6 +53,21 @@ class OthelloPosition(object):
         :return: The OthelloPosition resulting from making the move action in the current position.
         """
         # TODO: write the code for this method and whatever helper methods it need
+        # Optional: Check if proposed action is valid
+        white = self.to_move()
+        new_position = self.clone()
+        if not action.is_pass_move:
+            if self.to_move():
+                new_position.board[action.row][action.col] = 'W'
+            else:
+                new_position.board[action.row][action.col] = 'B'
+        if new_position.to_move:
+            new_position.to_move = False
+        else:
+            new_position.to_move = True
+        
+        return (new_position)
+        
 
     def get_moves(self):
         """
@@ -327,3 +342,15 @@ class OthelloPosition(object):
         """
         print(self.board)
         # print("ToMove: ", self.maxPlayer)
+
+    def check_is_leaf(self):
+        """
+        Checks if the current othello board is a leaf
+        :return: Boolean True for if the board is full
+        """
+        for i in range(0,self.BOARD_SIZE):
+            col = i % 8 + 1
+            row = i // 8 + 1
+            if( self.board[row][col] == 'E'):
+                return (False)
+        return (True)
