@@ -11,8 +11,6 @@ def main():
         print("Usage: Othello.py <gameState> <time limit>")
     
     position = OthelloPosition(argv[1])
-
-    evaluator = CountingEvaluator()
     algorithm = MiniMaxAlgorithm()
     algorithm.set_evaluator(CountingEvaluator())
     action = algorithm.evaluate(position)

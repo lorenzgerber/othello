@@ -17,7 +17,10 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         print("evaluating")
         # Here comes the MiniMax algorithm that will
         # call for the self.evaluator.evaluate to get
-        # the heuristic 
+        # the heuristic
+
+        
+
         heuristic = self.evaluator.evaluate(self.start_position)
 
         # the immediate next move from current othello_position 
@@ -31,3 +34,9 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.depth = depth
         print("set the depth")
 
+
+    def max_value(self):
+        print("max value")
+
+    def min_value(self):
+        print("min value")
