@@ -12,6 +12,7 @@ def main():
     
     position = OthelloPosition(argv[1])
     algorithm = MiniMaxAlgorithm()
+    algorithm.set_search_depth(1)
     algorithm.set_evaluator(CountingEvaluator())
     action = algorithm.evaluate(position)
 
