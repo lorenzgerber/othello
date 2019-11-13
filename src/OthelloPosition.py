@@ -332,7 +332,7 @@ class OthelloPosition(object):
         ot = OthelloPosition("")
         ot.board = np.copy(self.board)
         ot.maxPlayer = self.maxPlayer
-        print("OT Size: ", self.board.shape)
+        #print("OT Size: ", self.board.shape)
         return ot
 
     def print_board(self):

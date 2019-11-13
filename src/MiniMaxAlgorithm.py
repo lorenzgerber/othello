@@ -1,45 +1,43 @@
 from OthelloAlgorithm import OthelloAlgorithm
 from OthelloAction import OthelloAction
 from math import inf
+from time import time
 
 class MiniMaxAlgorithm(OthelloAlgorithm):
 
     def __init__(self):
-        self.depth = 1
+        self.depth = 0
         self.tree = []
+        self.depth_step = 1
+
+
 
     def set_evaluator(self, othello_evaluator):
         self.evaluator = othello_evaluator
-        print("I have set the othello_evaluator")
 
     def evaluate(self, othello_position):
 
         self.start_position = othello_position
-
-        print("evaluating")
-        # Here comes the MiniMax algorithm that will
-        # call for the self.evaluator.evaluate to get
-        # the heuristic
-        heuristic = self.max_value( self.start_position, self.tree, -inf, +inf)
-
-        # the immediate next move from current othello_position 
-        # that resulted in the best heuristic shall be returned
-        # as othello_action
-
+        start_time = time()
+        while True:
+            heuristic = self.max_value( self.start_position, self.depth, -inf, +inf)
+            print(self.depth)
+            if (time() - start_time >= 2):
+                 break
+            
+            self.depth = self.depth + self.depth_step
+        
+        
         possible_moves = self.start_position.get_moves()
         return (possible_moves[0])
 
     def set_search_depth(self, depth):
         self.depth = depth
-        print("set the depth")
 
 
-    def max_value(self, othello_position, tree, alpha, beta):
-        print("max value")
+    def max_value(self, othello_position, depth, alpha, beta):
         
-        # if s is a leaf then (othello board is full)
-        if (othello_position.check_is_leaf() or self.depth == 0):
-            print('report utility')
+        if (othello_position.check_is_leaf() or depth == 0):
             return (self.evaluator.evaluate(othello_position))
         
         value = -inf
@@ -47,23 +45,19 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         for child_move in othello_position.get_moves():
             new_position = othello_position.clone()
             new_position.make_move(child_move)
-            value = max(value, self.min_value(new_position, tree, alpha, beta))
+            value = max(value, self.min_value(new_position, depth, alpha, beta))
             alpha = max(alpha, value)
             if alpha >= beta:
-                # beta cutoff
                 break
         
         return ( value )
 
 
-    def min_value(self, othello_position, tree, alpha, beta):
-        print("min value")
+    def min_value(self, othello_position, depth, alpha, beta):
 
-        self.depth = self.depth - 1
+        depth = depth - 1
         
-        # if s is a leaf then (othello board is full)
         if (othello_position.check_is_leaf()):
-            print('report utility')
             return (self.evaluator.evaluate(othello_position))
 
         value = +inf
@@ -71,10 +65,9 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         for child_move in othello_position.get_moves():
             new_position = othello_position.clone()
             new_position.make_move(child_move)
-            value = min(value, self.max_value(new_position, tree, alpha, beta))
+            value = min(value, self.max_value(new_position, depth, alpha, beta))
             alpha = min(alpha, value)
             if alpha >= beta:
-                # alpha cutoff
                 break
         
         return ( value )
