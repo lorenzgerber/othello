@@ -10,6 +10,8 @@ class OthelloPosition(object):
     Author: Ola Ringdahl
     """
 
+    move_steps = [(0,1), (1,1), (1,0), (1,-1), (-1,0), (-1,-1), (0,-1), (-1,1)]
+
     def __init__(self, board_str=""):
         """
         Creates a new position according to str. If str is not given all squares are set to E (empty)
@@ -54,19 +56,53 @@ class OthelloPosition(object):
         """
         # TODO: write the code for this method and whatever helper methods it need
         # Optional: Check if proposed action is valid
-        white = self.to_move()
-        new_position = self.clone()
+
         if not action.is_pass_move:
             if self.to_move():
-                new_position.board[action.row][action.col] = 'W'
+                self.board[action.row][action.col] = 'W'
             else:
-                new_position.board[action.row][action.col] = 'B'
-        if new_position.to_move:
-            new_position.to_move = False
+                self.board[action.row][action.col] = 'B'
+
+            #print(" ".join([str(action.row), str(action.col)]))
+            #self.print_board()
+               
+            for i in OthelloPosition.move_steps:
+                outer_bound_color = self.board[action.row][action.col]
+                current = (action.row + i[0], action.col + i[1])
+                
+                if ( self.board[current[0]][current[1]] != 'E' or self.board[current[0], current[1]] != outer_bound_color):
+                    collect_list = []
+                    exit_condition = False
+                    
+                    while not exit_condition:
+                        
+                        collect_list.append(current)
+                        current = (current[0] + i[0], current[1]+ i[1])
+                        
+                        if ( self.board[current[0]][current[1]] == 'E' ):
+                            exit_condition = True
+
+                        if ( self.board[current[0], current[1]] == outer_bound_color ):
+                            exit_condition = True
+                        
+                        if ( current[0] < 0 or current[1] < 0 ):
+                            exit_condition = True
+
+                        if ( current[0] > self.BOARD_SIZE - 1 or current[1] > self.BOARD_SIZE):
+                            exit_condition = True
+
+
+                    if ( self.board[current[0]][current[1]] == outer_bound_color):
+                        for j in collect_list:
+                            self.board[j[0]][j[1]] = outer_bound_color
+
+        #self.print_board()
+
+        if self.to_move:
+            self.maxPlayer = False
         else:
-            new_position.to_move = True
+            self.maxPlayer = True
         
-        return (new_position)
         
 
     def get_moves(self):

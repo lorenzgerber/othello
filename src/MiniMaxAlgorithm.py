@@ -9,7 +9,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.depth = 0
         self.tree = []
         self.depth_step = 1
-        self.time_limit = 100000
+        self.time_limit = 10
         self.transpositions = {}
 
 
@@ -19,9 +19,9 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
     def evaluate(self, othello_position):
 
-        self.start_position = othello_position
         start_time = time()
         while True:
+            self.start_position = othello_position.clone()
             heuristic = self.max_value( self.start_position, self.depth, -inf, +inf, "0", self.transpositions ,start_time)
             print(heuristic)
             if (time() - start_time >= self.time_limit):
@@ -73,10 +73,12 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
             new_position.make_move(child_move)
             value = max(value, self.min_value(new_position, depth, alpha, beta, sequence + str(move_id), transpositions, start_time))
             sorted_order.append((move_id, value))
-            alpha = max(alpha, value)
-            if alpha >= beta:
+            
+            if value >= beta:
                 transpositions[sequence] = sorted_order
-                break
+                return (value)
+
+            alpha = max(alpha, value)
 
         transpositions[sequence] = sorted_order
         
@@ -119,11 +121,14 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
             new_position = othello_position.clone()
             new_position.make_move(child_move)
             value = min(value, self.max_value(new_position, depth, alpha, beta, sequence + str(move_id), transpositions, start_time))
-            alpha = min(alpha, value)
-            if alpha >= beta:
+            sorted_order.append((move_id, value))
+            
+            if value <= alpha:
                 transpositions[sequence] = sorted_order
-                break
+                return (value)
 
-            transpositions[sequence] = sorted_order
+            beta = min(beta, value)
+
+        transpositions[sequence] = sorted_order
         
         return ( value )
