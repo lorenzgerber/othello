@@ -70,7 +70,7 @@ class OthelloPosition(object):
                 outer_bound_color = self.board[action.row][action.col]
                 current = (action.row + i[0], action.col + i[1])
                 
-                if ( self.board[current[0]][current[1]] != 'E' or self.board[current[0], current[1]] != outer_bound_color):
+                if ( self.board[current[0]][current[1]] != 'E' and self.board[current[0], current[1]] != outer_bound_color):
                     collect_list = []
                     exit_condition = False
                     
@@ -98,7 +98,7 @@ class OthelloPosition(object):
 
         #self.print_board()
 
-        if self.to_move:
+        if ( self.maxPlayer == True ):
             self.maxPlayer = False
         else:
             self.maxPlayer = True

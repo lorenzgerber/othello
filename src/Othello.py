@@ -15,7 +15,7 @@ def main():
     algorithm.set_search_depth(1)
     algorithm.set_evaluator(CountingEvaluator())
     action = algorithm.evaluate(position)
-
+    print((action.row, action.col))
     return (action)
 
 

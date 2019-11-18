@@ -9,7 +9,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.depth = 0
         self.tree = []
         self.depth_step = 1
-        self.time_limit = 10
+        self.time_limit = 80
         self.transpositions = {}
 
 
@@ -23,15 +23,21 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         while True:
             self.start_position = othello_position.clone()
             heuristic = self.max_value( self.start_position, self.depth, -inf, +inf, "0", self.transpositions ,start_time)
-            print(heuristic)
+            print(" ".join(["Heuristic:", str(heuristic)]))
             if (time() - start_time >= self.time_limit):
                  break
             
             self.depth = self.depth + self.depth_step
         
-        
-        possible_moves = self.start_position.get_moves()
-        return (possible_moves[0])
+        ordering = self.transpositions.get('0')
+
+        def get_key(item):
+                return (item[1])
+
+        ordering = sorted(ordering, key=get_key,reverse=True)
+        best_move = [x[0] for x in ordering][0]
+        moves = othello_position.get_moves()
+        return (moves[best_move])
 
     def set_search_depth(self, depth):
         self.depth = depth
@@ -59,15 +65,13 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
             ordering = [x[0] for x in ordering]
             sorted_order = []
 
-
-
-
         for move_id in ordering:
 
             child_move = moves[move_id]
 
             if (time() - start_time >= self.time_limit):
-                    break
+                #othello_position.print_board()
+                break
 
             new_position = othello_position.clone()
             new_position.make_move(child_move)
@@ -90,6 +94,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         depth = depth - 1
         
         if (othello_position.check_is_leaf()):
+            #othello_position.print_board()
             return (self.evaluator.evaluate(othello_position))
 
         value = +inf
@@ -109,14 +114,13 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
             ordering = [x[0] for x in ordering]
             sorted_order = []
         
-
-
         for move_id in ordering:
 
             child_move = moves[move_id]
 
             if (time() - start_time >= self.time_limit):
-                 break
+                #othello_position.print_board()
+                break
 
             new_position = othello_position.clone()
             new_position.make_move(child_move)
