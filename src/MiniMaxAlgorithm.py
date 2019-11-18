@@ -9,7 +9,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.depth = 0
         self.tree = []
         self.depth_step = 1
-        self.time_limit = 80
+        self.time_limit = 10
         self.transpositions = {}
 
 

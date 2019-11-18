@@ -96,7 +96,6 @@ class OthelloPosition(object):
                         for j in collect_list:
                             self.board[j[0]][j[1]] = outer_bound_color
 
-        #self.print_board()
 
         if ( self.maxPlayer == True ):
             self.maxPlayer = False
