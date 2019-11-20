@@ -15,7 +15,7 @@ def main():
     algorithm = MiniMaxAlgorithm()
     algorithm.set_search_depth(1)
     algorithm.set_time_limit(int(argv[2]))
-    algorithm.set_evaluator(StabilityCornerEvaluator())
+    algorithm.set_evaluator(CountingEvaluator())
     action = algorithm.evaluate(position)
     if ( action != 'pass'):
         action = "".join(['(',str(action.row),',', str(action.col),')'])
