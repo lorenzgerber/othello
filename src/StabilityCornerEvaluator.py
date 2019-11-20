@@ -8,16 +8,16 @@ class StabilityCornerEvaluator(OthelloEvaluator):
 
 
         # Check corners
-        score = self.__check_corner('B')
-        score -= self.__check_corner('W')
+        score = self.__check_corner('X')
+        score -= self.__check_corner('O')
         
         # Check edges
-        score += self.__check_edges('B')
-        score -= self.__check_edges('W')
+        score += self.__check_edges('X')
+        score -= self.__check_edges('O')
 
         # Check one square off edges
-        score += self.__check_one_offs('B')
-        score -= self.__check_one_offs('W')
+        score += self.__check_one_offs('X')
+        score -= self.__check_one_offs('O')
 
         return (score)
 
