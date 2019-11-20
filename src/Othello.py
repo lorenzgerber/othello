@@ -14,10 +14,11 @@ def main():
     position = OthelloPosition(argv[1])
     algorithm = MiniMaxAlgorithm()
     algorithm.set_search_depth(1)
+    algorithm.set_time_limit(int(argv[2]))
     algorithm.set_evaluator(StabilityCornerEvaluator())
     action = algorithm.evaluate(position)
-    print((action.row, action.col))
-    return (action)
+    result = "".join(['(',str(action.row),',', str(action.col),')'])
+    print(result)
 
 
 if __name__ == "__main__":
