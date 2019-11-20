@@ -19,21 +19,25 @@ class StabilityCornerEvaluator(OthelloEvaluator):
         score += self.__check_one_offs('W')
         score -= self.__check_one_offs('B')
 
+        # Number of
+        score += self.count(self.position)
+
+        print(score)
         return (score)
 
     def __check_corner(self, color):
         points_sum = 0
         if ( self.position.board[0][0] == color):
-            points_sum =+ 30
+            points_sum =+ 1
 
         if ( self.position.board[0][self.position.BOARD_SIZE-1] == color):
-            points_sum =+ 30
+            points_sum =+ 1
             
         if ( self.position.board[self.position.BOARD_SIZE-1][0] == color):
-            points_sum =+ 30
+            points_sum =+ 1
 
         if ( self.position.board[self.position.BOARD_SIZE-1][self.position.BOARD_SIZE-1] == color):
-            points_sum =+ 30
+            points_sum =+ 1
         
         return ( points_sum )
 
@@ -41,19 +45,19 @@ class StabilityCornerEvaluator(OthelloEvaluator):
         points_sum = 0
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[0][i] == color ):
-                points_sum += 20
+                points_sum += 1
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[self.position.BOARD_SIZE-1][i] == color ):
-                points_sum += 20
+                points_sum += 1
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][0] == color ):
-                points_sum += 20
+                points_sum += 1
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][self.position.BOARD_SIZE-1] == color ):
-                points_sum += 20
+                points_sum += 1
         
         return (points_sum)
 
@@ -63,18 +67,29 @@ class StabilityCornerEvaluator(OthelloEvaluator):
 
         for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[1][i] == color ):
-                points_sum -= 30
+                points_sum -= 1
 
         for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[self.position.BOARD_SIZE-2][i] == color ):
-                points_sum -= 30
+                points_sum -= 1
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][1] == color ):
-                points_sum -= 30
+                points_sum -= 1
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][self.position.BOARD_SIZE-2] == color ):
-                points_sum -= 30
+                points_sum -= 1
         
         return (points_sum)
+
+    def count(self, othello_position):
+        black_squares = 0
+        white_squares = 0
+        for row in othello_position.board:
+            for item in row:
+                if item == 'W':
+                    white_squares += 1
+                if item == 'B':
+                    black_squares += 1
+        return white_squares - black_squares

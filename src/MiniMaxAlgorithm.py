@@ -26,7 +26,6 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         while True:
             self.start_position = othello_position.clone()
             heuristic = self.max_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions ,start_time)
-            #print(" ".join(["Heuristic:", str(heuristic)]))
             if (time() - start_time >= self.time_limit):
                  break
             
