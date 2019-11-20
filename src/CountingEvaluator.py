@@ -11,4 +11,4 @@ class CountingEvaluator(OthelloEvaluator):
                     white_squares += 1
                 if item == 'B':
                     black_squares += 1
-        return white_squares - black_squares
+        return black_squares - white_squares
