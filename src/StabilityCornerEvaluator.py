@@ -24,16 +24,16 @@ class StabilityCornerEvaluator(OthelloEvaluator):
     def __check_corner(self, color):
         points_sum = 0
         if ( self.position.board[0][0] == color):
-            points_sum =+ 3
+            points_sum =+ 30
 
         if ( self.position.board[0][self.position.BOARD_SIZE-1] == color):
-            points_sum =+ 3
+            points_sum =+ 30
             
         if ( self.position.board[self.position.BOARD_SIZE-1][0] == color):
-            points_sum =+ 3
+            points_sum =+ 30
 
         if ( self.position.board[self.position.BOARD_SIZE-1][self.position.BOARD_SIZE-1] == color):
-            points_sum =+ 3
+            points_sum =+ 30
         
         return ( points_sum )
 
@@ -41,19 +41,19 @@ class StabilityCornerEvaluator(OthelloEvaluator):
         points_sum = 0
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[0][i] == color ):
-                points_sum += 2
+                points_sum += 20
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[self.position.BOARD_SIZE-1][i] == color ):
-                points_sum += 2
+                points_sum += 20
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][0] == color ):
-                points_sum += 2
+                points_sum += 20
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][self.position.BOARD_SIZE-1] == color ):
-                points_sum += 2
+                points_sum += 20
         
         return (points_sum)
 
@@ -63,18 +63,18 @@ class StabilityCornerEvaluator(OthelloEvaluator):
 
         for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[1][i] == color ):
-                points_sum -= 1
+                points_sum -= 30
 
         for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[self.position.BOARD_SIZE-2][i] == color ):
-                points_sum -= 1
+                points_sum -= 30
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][1] == color ):
-                points_sum -= 1
+                points_sum -= 30
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][self.position.BOARD_SIZE-2] == color ):
-                points_sum -= 1
+                points_sum -= 30
         
         return (points_sum)
