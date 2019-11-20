@@ -25,7 +25,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         start_time = time()
         while True:
             self.start_position = othello_position.clone()
-            heuristic = self.max_value( self.start_position, self.depth, -inf, +inf, "0", self.transpositions ,start_time)
+            heuristic = self.max_value( self.start_position, self.depth, -inf, +inf, "0,", self.transpositions ,start_time)
             #print(" ".join(["Heuristic:", str(heuristic)]))
             if (time() - start_time >= self.time_limit):
                  break
@@ -36,6 +36,9 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
         def get_key(item):
                 return (item[1])
+
+        if (ordering == None ):
+            return ('pass')
 
         ordering = sorted(ordering, key=get_key,reverse=True)
         best_move = [x[0] for x in ordering][0]
@@ -63,6 +66,11 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         else:
             def get_key(item):
                 return (item[1])
+            
+            if (len(ordering) > len(moves) ):
+                print(sequence)
+                print(ordering)
+                print(moves)
 
             ordering = sorted(ordering, key=get_key,reverse=True)
             ordering = [x[0] for x in ordering]
@@ -73,12 +81,11 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
             child_move = moves[move_id]
 
             if (time() - start_time >= self.time_limit):
-                #othello_position.print_board()
                 break
 
             new_position = othello_position.clone()
             new_position.make_move(child_move)
-            value = max(value, self.min_value(new_position, depth, alpha, beta, sequence + str(move_id), transpositions, start_time))
+            value = max(value, self.min_value(new_position, depth, alpha, beta, sequence + str(move_id) + ',', transpositions, start_time))
             sorted_order.append((move_id, value))
             
             if value >= beta:
@@ -113,6 +120,11 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
             def get_key(item):
                 return (item[1])
 
+            if (len(ordering) > len(moves) ):
+                print(sequence)
+                print(ordering)
+                print(moves)
+
             ordering = sorted(ordering, key=get_key)
             ordering = [x[0] for x in ordering]
             sorted_order = []
@@ -127,7 +139,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
             new_position = othello_position.clone()
             new_position.make_move(child_move)
-            value = min(value, self.max_value(new_position, depth, alpha, beta, sequence + str(move_id), transpositions, start_time))
+            value = min(value, self.max_value(new_position, depth, alpha, beta, sequence + str(move_id) + ',', transpositions, start_time))
             sorted_order.append((move_id, value))
             
             if value <= alpha:

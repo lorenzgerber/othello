@@ -17,8 +17,9 @@ def main():
     algorithm.set_time_limit(int(argv[2]))
     algorithm.set_evaluator(StabilityCornerEvaluator())
     action = algorithm.evaluate(position)
-    result = "".join(['(',str(action.row),',', str(action.col),')'])
-    print(result)
+    if ( action != 'pass'):
+        action = "".join(['(',str(action.row),',', str(action.col),')'])
+    print(action)
 
 
 if __name__ == "__main__":
