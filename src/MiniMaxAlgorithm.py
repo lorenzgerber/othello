@@ -25,14 +25,14 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         start_time = time()
         while True:
             self.start_position = othello_position.clone()
-            heuristic = self.max_value( self.start_position, self.depth, -inf, +inf, "0,", self.transpositions ,start_time)
+            heuristic = self.max_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions ,start_time)
             #print(" ".join(["Heuristic:", str(heuristic)]))
             if (time() - start_time >= self.time_limit):
                  break
             
             self.depth = self.depth + self.depth_step
         
-        ordering = self.transpositions.get('0')
+        ordering = self.transpositions.get('0,')
 
         def get_key(item):
                 return (item[1])
