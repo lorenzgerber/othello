@@ -22,7 +22,6 @@ class StabilityCornerEvaluator(OthelloEvaluator):
         # Number of
         score += self.count(self.position)
 
-        print(score)
         return (score)
 
     def __check_corner(self, color):
