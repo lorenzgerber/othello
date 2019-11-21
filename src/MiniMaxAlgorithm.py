@@ -6,7 +6,7 @@ from time import time
 class MiniMaxAlgorithm(OthelloAlgorithm):
 
     def __init__(self):
-        self.depth = 10
+        self.depth = 0
         self.tree = []
         self.depth_step = 1
         self.time_limit = 10
