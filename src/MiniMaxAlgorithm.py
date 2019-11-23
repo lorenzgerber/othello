@@ -67,6 +67,8 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
                     result = i
         else:
             result = 'pass'
+        print(self.depth)
+        print(time() - start_time)
 
         return (result)
 
@@ -100,7 +102,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
                 return (item[1])
 
             # sort the values from high to low (Max)
-            ordering = sorted(ordering, key=get_key,reverse=True)
+            ordering = sorted(ordering, key=get_key,reverse=False)
             ordering = [x[0] for x in ordering]
             sorted_order = []
 
@@ -154,7 +156,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
                 return (item[1])
 
             # sort the values from low to high (min)
-            ordering = sorted(ordering, key=get_key)
+            ordering = sorted(ordering, key=get_key, reverse=True)
             ordering = [x[0] for x in ordering]
             sorted_order = []
         
