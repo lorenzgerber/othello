@@ -1,6 +1,15 @@
 from OthelloEvaluator import OthelloEvaluator
 
-class StabilityCornerEvaluator(OthelloEvaluator):
+class HeuristicsEvaluator(OthelloEvaluator):
+
+
+    def __init__(self):
+        self.value_corner = 1
+        self.value_edge = 1
+        self.value_one_offs = 1
+        self.value_stones = 1
+        self.value_moves = 1
+
 
     def evaluate(self, othello_position):
         

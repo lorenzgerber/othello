@@ -33,42 +33,40 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
         # make a list for the result of every depth search
         moves = othello_position.get_moves()
+        if ( moves != []):
+            while self.depth <= self.max_depth:
+                
+                # clone the position as it will be overwritten else
+                self.start_position = othello_position.clone()
+
+                # Max for White, Min for Black
+                if (self.start_position.to_move() == True):
+                    self.max_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions ,start_time )
+                    ordering = self.transpositions.get('0,')
+                    ordering = sorted(ordering, key=get_key, reverse=True)
+                else:
+                    self.min_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions, start_time ) 
+                    ordering = self.transpositions.get('0,')
+                    ordering = sorted(ordering, key=get_key, reverse=False)
+
+                # determine index of best move
+                best_move = [x[0] for x in ordering][0]
+
+                #extract best move from moves and add to best move att depth list
+                best_move_at_depth.append(moves[best_move])
+                
+                # manage time
+                if (time() - start_time >= self.time_limit):
+                    break
+                
+                # set new search depth
+                self.depth = self.depth + self.depth_step
         
-
-        
-        while self.depth <= self.max_depth:
-            
-
-            # clone the position as it will be overwritten else
-            self.start_position = othello_position.clone()
-
-            # Max for White, Min for Black
-            if (self.start_position.to_move() == True):
-                self.max_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions ,start_time )
-                ordering = self.transpositions.get('0,')
-                ordering = sorted(ordering, key=get_key, reverse=True)
-            else:
-                self.min_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions, start_time ) 
-                ordering = self.transpositions.get('0,')
-                ordering = sorted(ordering, key=get_key, reverse=False)
-
-            # determine index of best move
-            best_move = [x[0] for x in ordering][0]
-
-            #extract best move from moves and add to best move att depth list
-            best_move_at_depth.append(moves[best_move])
-            
-            # manage time
-            if (time() - start_time >= self.time_limit):
-                 break
-            
-            # set new search depth
-            self.depth = self.depth + self.depth_step
-        
-
-        for i in best_move_at_depth:
-            if (isinstance(i, (OthelloAction)) == True):
-                result = i
+            for i in best_move_at_depth:
+                if (isinstance(i, (OthelloAction)) == True):
+                    result = i
+        else:
+            result = 'pass'
 
         return (result)
 
@@ -81,7 +79,11 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         depth = depth - 0.5
 
         if (othello_position.check_is_leaf() or depth == 0):
-            return (self.evaluator.evaluate(othello_position))
+            value = self.evaluator.evaluate(othello_position)
+            sorted_order = []
+            sorted_order.append((0, value))
+            transpositions[sequence] = sorted_order
+            return (value)
         
         value = -inf
 
@@ -129,7 +131,11 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         depth = depth - 0.5
         
         if (othello_position.check_is_leaf() or depth == 0):
-            return (self.evaluator.evaluate(othello_position))
+            value = self.evaluator.evaluate(othello_position)
+            sorted_order = []
+            sorted_order.append((0, value))
+            transpositions[sequence] = sorted_order
+            return (value)
 
         value = +inf
 
