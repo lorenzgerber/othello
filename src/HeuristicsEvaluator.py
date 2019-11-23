@@ -4,11 +4,11 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
 
     def __init__(self):
-        self.value_corner = 20
-        self.value_edge = 1
-        self.value_one_off = -1
-        self.value_stone = 1
-        self.value_move = 1
+        self.value_corner = 100
+        self.value_edge = 100
+        #self.value_one_off = -1
+        self.value_stone = 10
+        self.value_move = 10
 
 
     def evaluate(self, othello_position):
