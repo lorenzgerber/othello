@@ -12,6 +12,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.depth_step = 1
         self.time_limit = 10
         self.transpositions = {}
+        self.next_moves
 
 
 
@@ -41,11 +42,11 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
                 # Max for White, Min for Black
                 if (self.start_position.to_move() == True):
-                    self.max_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions ,start_time )
+                    self.max_value( self.start_position, self.depth, -inf, +inf, True, self.transpositions, self.next_moves, start_time )
                     ordering = self.transpositions.get('0,')
                     ordering = sorted(ordering, key=get_key, reverse=True)
                 else:
-                    self.min_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions, start_time ) 
+                    self.min_value( self.start_position, self.depth, -inf, +inf, True, self.transpositions, self.next_moves, start_time ) 
                     ordering = self.transpositions.get('0,')
                     ordering = sorted(ordering, key=get_key, reverse=False)
 
@@ -76,91 +77,53 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.max_depth = depth
 
 
-    def max_value(self, othello_position, depth, alpha, beta, sequence, transpositions, start_time):
+    def max_value(self, othello_position, depth, alpha, beta, top_level, next_moves, start_time):
         
         depth = depth - 0.5
         moves = othello_position.get_moves()
 
         if (othello_position.check_is_leaf() or depth == 0 or moves == []):
             value = self.evaluator.evaluate(othello_position)
-            sorted_order = []
-            sorted_order.append((0, value))
-            transpositions[sequence] = sorted_order
+            if (top_level == True):
+                next_moves = [(0,value)]
+
             return (value)
         
         value = -inf
 
-        
-
-        # check if there is an ordering for the current sequece
-        ordering = transpositions.get(sequence)
-        if (ordering == None ):
-            ordering = range(len(moves))
-            sorted_order = []
-        else:
-            def get_key(item):
-                return (item[1])
-
-            # sort the values from high to low (Max)
-            ordering = sorted(ordering, key=get_key,reverse=False)
-            ordering = [x[0] for x in ordering]
-            sorted_order = []
-
-        for move_id in ordering:
+        for move_id in range(0, len(moves):
 
             child_move = moves[move_id]
-
             if (time() - start_time >= self.time_limit):
                 break
-
             new_position = othello_position.clone()
             new_position.make_move(child_move)
-            value = max(value, self.min_value(new_position, depth, alpha, beta, sequence + str(move_id) + ',', transpositions, start_time))
-            sorted_order.append((move_id, value))
-            
-            if value >= beta:
-                transpositions[sequence] = sorted_order
-                return (value)
-
+            value = max(value, self.min_value(new_position, depth, alpha, beta, false, [], start_time))
             alpha = max(alpha, value)
+            if value >= beta:
+                return ( value )
 
-        transpositions[sequence] = sorted_order
+            if (top_level == True):
+                next_moves.append((move_id, value))
         
         return ( value )
 
 
-    def min_value(self, othello_position, depth, alpha, beta, sequence, transpositions, start_time):
+    def min_value(self, othello_position, depth, alpha, beta, top_level, start_time):
 
         depth = depth - 0.5
-
         moves = othello_position.get_moves()
         
         if (othello_position.check_is_leaf() or depth == 0 or moves == []):
             value = self.evaluator.evaluate(othello_position)
-            sorted_order = []
-            sorted_order.append((0, value))
-            transpositions[sequence] = sorted_order
+            if (top_level == True):
+                next_moves = [(0,value)]
+
             return (value)
 
         value = +inf
-
         
-
-        # check if there is an ordering for the current sequece
-        ordering = transpositions.get(sequence)
-        if (ordering == None ):
-            ordering = range(len(moves))
-            sorted_order = []
-        else:
-            def get_key(item):
-                return (item[1])
-
-            # sort the values from low to high (min)
-            ordering = sorted(ordering, key=get_key, reverse=True)
-            ordering = [x[0] for x in ordering]
-            sorted_order = []
-        
-        for move_id in ordering:
+        for move_id in range(0, len(moves):
 
             child_move = moves[move_id]
 
@@ -169,15 +132,15 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
             new_position = othello_position.clone()
             new_position.make_move(child_move)
-            value = min(value, self.max_value(new_position, depth, alpha, beta, sequence + str(move_id) + ',', transpositions, start_time))
-            sorted_order.append((move_id, value))
+            value = min(value, self.max_value(new_position, depth, alpha, beta, False, [], start_time))
             
             if value <= alpha:
-                transpositions[sequence] = sorted_order
                 return ( value )
 
             beta = min(beta, value)
 
-        transpositions[sequence] = sorted_order
+            if (top_level == True):
+                next_moves.append((move_id, value))
+
         
         return ( value )
