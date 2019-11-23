@@ -77,8 +77,9 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
     def max_value(self, othello_position, depth, alpha, beta, sequence, transpositions, start_time):
         
         depth = depth - 0.5
+        moves = othello_position.get_moves()
 
-        if (othello_position.check_is_leaf() or depth == 0):
+        if (othello_position.check_is_leaf() or depth == 0 or moves == []):
             value = self.evaluator.evaluate(othello_position)
             sorted_order = []
             sorted_order.append((0, value))
@@ -87,7 +88,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         
         value = -inf
 
-        moves = othello_position.get_moves()
+        
 
         # check if there is an ordering for the current sequece
         ordering = transpositions.get(sequence)
@@ -129,8 +130,10 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
     def min_value(self, othello_position, depth, alpha, beta, sequence, transpositions, start_time):
 
         depth = depth - 0.5
+
+        moves = othello_position.get_moves()
         
-        if (othello_position.check_is_leaf() or depth == 0):
+        if (othello_position.check_is_leaf() or depth == 0 or moves == []):
             value = self.evaluator.evaluate(othello_position)
             sorted_order = []
             sorted_order.append((0, value))
@@ -139,7 +142,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
         value = +inf
 
-        moves = othello_position.get_moves()
+        
 
         # check if there is an ordering for the current sequece
         ordering = transpositions.get(sequence)
