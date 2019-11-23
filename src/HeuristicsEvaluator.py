@@ -4,11 +4,11 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
 
     def __init__(self):
-        self.value_corner = 100
-        self.value_edge = 50
-        self.value_one_off = 10
-        self.value_stone = 10
-        self.value_move = 100
+        self.value_corner = 10
+        self.value_edge = 2
+        self.value_one_off = -1
+        self.value_stone = 1
+        self.value_move = 1
 
 
     def evaluate(self, othello_position):
@@ -78,19 +78,19 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
         for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[1][i] == color ):
-                points_sum -= self.value_one_off
+                points_sum += self.value_one_off
 
         for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[self.position.BOARD_SIZE-2][i] == color ):
-                points_sum -= self.value_one_off
+                points_sum += self.value_one_off
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][1] == color ):
-                points_sum -= self.value_one_off
+                points_sum += self.value_one_off
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][self.position.BOARD_SIZE-2] == color ):
-                points_sum -= self.value_one_off
+                points_sum += self.value_one_off
         
         return (points_sum)
 
