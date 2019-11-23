@@ -4,11 +4,11 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
 
     def __init__(self):
-        self.value_corner = 1
-        self.value_edge = 1
-        self.value_one_offs = 1
-        self.value_stones = 1
-        self.value_moves = 1
+        self.value_corner = 10
+        self.value_edge = 10
+        self.value_one_off = 20
+        self.value_stone = 15
+        self.value_move = 1
 
 
     def evaluate(self, othello_position):
@@ -29,23 +29,23 @@ class HeuristicsEvaluator(OthelloEvaluator):
         score -= self.__check_one_offs('B')
 
         # Number of
-        score += self.count(self.position)
+        score += self.count_stones(self.position)
 
         return (score)
 
     def __check_corner(self, color):
         points_sum = 0
         if ( self.position.board[0][0] == color):
-            points_sum =+ 1
+            points_sum =+ self.value_corner
 
         if ( self.position.board[0][self.position.BOARD_SIZE-1] == color):
-            points_sum =+ 1
+            points_sum =+ self.value_corner
             
         if ( self.position.board[self.position.BOARD_SIZE-1][0] == color):
-            points_sum =+ 1
+            points_sum =+ self.value_corner
 
         if ( self.position.board[self.position.BOARD_SIZE-1][self.position.BOARD_SIZE-1] == color):
-            points_sum =+ 1
+            points_sum =+ self.value_corner
         
         return ( points_sum )
 
@@ -53,19 +53,19 @@ class HeuristicsEvaluator(OthelloEvaluator):
         points_sum = 0
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[0][i] == color ):
-                points_sum += 1
+                points_sum += self.value_edge
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[self.position.BOARD_SIZE-1][i] == color ):
-                points_sum += 1
+                points_sum += self.value_edge
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][0] == color ):
-                points_sum += 1
+                points_sum += self.value_edge
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][self.position.BOARD_SIZE-1] == color ):
-                points_sum += 1
+                points_sum += self.value_edge
         
         return (points_sum)
 
@@ -75,29 +75,32 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
         for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[1][i] == color ):
-                points_sum -= 1
+                points_sum -= self.value_one_off
 
         for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[self.position.BOARD_SIZE-2][i] == color ):
-                points_sum -= 1
+                points_sum -= self.value_one_off
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][1] == color ):
-                points_sum -= 1
+                points_sum -= self.value_one_off
 
         for i in range(1, self.position.BOARD_SIZE - 2):
             if ( self.position.board[i][self.position.BOARD_SIZE-2] == color ):
-                points_sum -= 1
+                points_sum -= self.value_one_off
         
         return (points_sum)
 
-    def count(self, othello_position):
+    def count_stones(self, othello_position):
         black_squares = 0
         white_squares = 0
         for row in othello_position.board:
             for item in row:
                 if item == 'W':
-                    white_squares += 1
+                    white_squares += self.value_stone
                 if item == 'B':
-                    black_squares += 1
+                    black_squares += self.value_stone
         return white_squares - black_squares
+
+    def count_moves(self, othello_position):
+        return len(othello_position.get_moves()) 
