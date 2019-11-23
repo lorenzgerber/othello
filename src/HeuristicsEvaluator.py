@@ -8,7 +8,7 @@ class HeuristicsEvaluator(OthelloEvaluator):
         self.value_edge = 10
         self.value_one_off = -100
         self.value_stone = 1
-        self.value_move = 50
+        self.value_move = 2
 
 
     def evaluate(self, othello_position):
