@@ -7,7 +7,7 @@ class HeuristicsEvaluator(OthelloEvaluator):
         self.value_corner = 100
         self.value_edge = 50
         self.value_one_off = 10
-        self.value_stone = 1000
+        self.value_stone = 10000
         self.value_move = 1
 
 
