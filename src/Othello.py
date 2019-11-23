@@ -13,7 +13,7 @@ def main():
     
     position = OthelloPosition(argv[1])
     algorithm = MiniMaxAlgorithm()
-    algorithm.set_search_depth(1)
+    algorithm.set_search_depth(7)
     algorithm.set_time_limit(int(argv[2]))
     algorithm.set_evaluator(StabilityCornerEvaluator())
     action = algorithm.evaluate(position)
