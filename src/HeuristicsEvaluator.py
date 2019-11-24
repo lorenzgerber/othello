@@ -17,8 +17,8 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
 
         # Check corners
-        score = self.__check_corner('W')
-        score -= self.__check_corner('B')
+        #score = self.__check_corner('W')
+        #score -= self.__check_corner('B')
         
         # Check edges
         score += self.__check_edges('W')
