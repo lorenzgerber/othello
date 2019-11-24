@@ -2,6 +2,7 @@ from OthelloAlgorithm import OthelloAlgorithm
 from OthelloAction import OthelloAction
 from math import inf
 from time import time
+import numpy as np
 
 class MiniMaxAlgorithm(OthelloAlgorithm):
 
@@ -12,6 +13,25 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.depth_step = 1
         self.time_limit = 10
         self.transpositions = {}
+
+    def parse_board_string(self, board_str):
+        self.BOARD_SIZE = 8
+        self.maxPlayer = True
+        self.board = np.array([['E' for col in range(self.BOARD_SIZE + 2)] for row in range(self.BOARD_SIZE + 2)])
+        if len(list(board_str)) >= 65:
+            if board_str[0] == 'W':
+                self.maxPlayer = True
+            else:
+                self.maxPlayer = False
+            for i in range(1, len(list(board_str))):
+                col = ((i - 1) % 8) + 1
+                row = (i - 1) // 8 + 1
+                # For convenience we use W and B in the board instead of X and O:
+                if board_str[i] == 'X':
+                    self.board[row][col] = 'B'
+                elif board_str[i] == 'O':
+                    self.board[row][col] = 'W'
+
 
 
 

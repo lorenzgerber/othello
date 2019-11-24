@@ -16,6 +16,7 @@ def main():
     algorithm.set_search_depth(5)
     algorithm.set_time_limit(int(argv[2]))
     algorithm.set_evaluator(HeuristicsEvaluator())
+    algorithm.parse_board_string(argv[1])
     action = algorithm.evaluate(position)
     if ( action != 'pass'):
         action = "".join(['(',str(action.row),',', str(action.col),')'])
