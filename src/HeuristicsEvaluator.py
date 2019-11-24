@@ -4,8 +4,8 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
 
     def __init__(self):
-        self.value_corner = 2
-        self.value_edge = 20
+        self.value_corner = 20
+        self.value_edge = 10
         self.value_one_off = -1
         self.value_stone = 5
         self.value_move = 2
@@ -32,7 +32,7 @@ class HeuristicsEvaluator(OthelloEvaluator):
         score += self.count_stones(self.position)
 
         # mobility
-        #score += self.count_moves(self.position)
+        score += self.count_moves(self.position)
 
         return (score)
 
@@ -106,17 +106,13 @@ class HeuristicsEvaluator(OthelloEvaluator):
         return white_squares - black_squares
 
     def count_moves(self, othello_position):
+        max_moves = 0
+        min_moves = 0
          
         if(othello_position.maxPlayer == True):
             max_moves = len(othello_position.get_moves())
-            othello_position.maxPlayer = False
-            min_moves = len(othello_position.get_moves())
-            othello_position.maxPlayer = True
         else:
             min_moves = len(othello_position.get_moves())
-            othello_position.maxPlayer = True
-            max_moves = len(othello_position.get_moves())
-            othello_position.maxPlayer = False
         
         max_moves = max_moves * self.value_move
         min_moves = min_moves * self.value_move
