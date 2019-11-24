@@ -68,8 +68,8 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
                     result = i
         else:
             result = 'pass'
-        print(self.depth)
-        print(time() - start_time)
+        #print(self.depth)
+        #print(time() - start_time)
 
         return (result)
 
