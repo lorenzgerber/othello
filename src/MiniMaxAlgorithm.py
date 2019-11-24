@@ -12,7 +12,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.depth_step = 1
         self.time_limit = 10
         self.transpositions = {}
-        self.next_moves
+        self.next_moves = []
 
 
 
@@ -42,12 +42,12 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
                 # Max for White, Min for Black
                 if (self.start_position.to_move() == True):
-                    self.max_value( self.start_position, self.depth, -inf, +inf, True, self.transpositions, self.next_moves, start_time )
-                    ordering = self.transpositions.get('0,')
-                    ordering = sorted(ordering, key=get_key, reverse=True)
+                    self.max_value( self.start_position, self.depth, -inf, +inf, True, self.next_moves, start_time )
+                    ordering = self.next_moves
+                    ordering = sorted(ordering, key=get_key, reverse=False)
                 else:
-                    self.min_value( self.start_position, self.depth, -inf, +inf, True, self.transpositions, self.next_moves, start_time ) 
-                    ordering = self.transpositions.get('0,')
+                    self.min_value( self.start_position, self.depth, -inf, +inf, True, self.next_moves, start_time ) 
+                    ordering = self.next_moves
                     ordering = sorted(ordering, key=get_key, reverse=False)
 
                 # determine index of best move
@@ -91,17 +91,19 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         
         value = -inf
 
-        for move_id in range(0, len(moves):
+        for move_id in range(0, len(moves)):
 
             child_move = moves[move_id]
             if (time() - start_time >= self.time_limit):
                 break
             new_position = othello_position.clone()
             new_position.make_move(child_move)
-            value = max(value, self.min_value(new_position, depth, alpha, beta, false, [], start_time))
-            alpha = max(alpha, value)
+            value = max(value, self.min_value(new_position, depth, alpha, beta, False, [], start_time))
+            
             if value >= beta:
                 return ( value )
+
+            alpha = max(alpha, value)
 
             if (top_level == True):
                 next_moves.append((move_id, value))
@@ -109,7 +111,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         return ( value )
 
 
-    def min_value(self, othello_position, depth, alpha, beta, top_level, start_time):
+    def min_value(self, othello_position, depth, alpha, beta, top_level, next_moves, start_time):
 
         depth = depth - 0.5
         moves = othello_position.get_moves()
@@ -123,7 +125,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
         value = +inf
         
-        for move_id in range(0, len(moves):
+        for move_id in range(0, len(moves)):
 
             child_move = moves[move_id]
 
@@ -142,5 +144,4 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
             if (top_level == True):
                 next_moves.append((move_id, value))
 
-        
         return ( value )
