@@ -4,10 +4,10 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
 
     def __init__(self):
-        self.value_corner = 5
+        self.value_corner = 2
         self.value_edge = 20
         self.value_one_off = -1
-        self.value_stone = 1
+        self.value_stone = 5
         self.value_move = 2
 
 
@@ -17,11 +17,11 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
 
         # Check corners
-        #score = self.__check_corner('W')
-        #score -= self.__check_corner('B')
+        score = self.__check_corner('W')
+        score -= self.__check_corner('B')
         
         # Check edges
-        score = self.__check_edges('W')
+        score += self.__check_edges('W')
         score -= self.__check_edges('B')
 
         # Check one square off edges
