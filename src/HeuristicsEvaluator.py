@@ -21,7 +21,7 @@ class HeuristicsEvaluator(OthelloEvaluator):
         #score -= self.__check_corner('B')
         
         # Check edges
-        score += self.__check_edges('W')
+        score = self.__check_edges('W')
         score -= self.__check_edges('B')
 
         # Check one square off edges
