@@ -25,14 +25,14 @@ class HeuristicsEvaluator(OthelloEvaluator):
         score -= self.__check_edges('B')
 
         # Check one square off edges
-        score += self.__check_one_offs('W')
-        score -= self.__check_one_offs('B')
+        #score += self.__check_one_offs('W')
+        #score -= self.__check_one_offs('B')
 
         # Number of
         score += self.count_stones(self.position)
 
         # mobility
-        score += self.count_moves(self.position)
+        #score += self.count_moves(self.position)
 
         return (score)
 
