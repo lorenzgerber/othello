@@ -1,5 +1,6 @@
 from OthelloAlgorithm import OthelloAlgorithm
 from OthelloAction import OthelloAction
+from PositionHandler import PositionHandler
 from math import inf
 from time import time
 import numpy as np
@@ -16,13 +17,13 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
     def parse_board_string(self, board_str):
         self.BOARD_SIZE = 8
-        self.maxPlayer = True
+        self.max_player = True
         self.board = np.array([['E' for col in range(self.BOARD_SIZE + 2)] for row in range(self.BOARD_SIZE + 2)])
         if len(list(board_str)) >= 65:
             if board_str[0] == 'W':
-                self.maxPlayer = True
+                self.max_player = True
             else:
-                self.maxPlayer = False
+                self.max_player = False
             for i in range(1, len(list(board_str))):
                 col = ((i - 1) % 8) + 1
                 row = (i - 1) // 8 + 1
@@ -41,7 +42,9 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
     def set_time_limit(self, time_limit):
         self.time_limit = time_limit
 
-    def evaluate(self, othello_position):
+    def evaluate(self):
+
+        self.handler = PositionHandler()
 
         # Helper function for tuple sorting
         def get_key(item):
@@ -52,20 +55,21 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         start_time = time()
 
         # make a list for the result of every depth search
-        moves = othello_position.get_moves()
+        moves = self.handler.get_moves(self.board, self.BOARD_SIZE, self.max_player)
         if ( moves != []):
             while self.depth <= self.max_depth:
                 
                 # clone the position as it will be overwritten else
-                self.start_position = othello_position.clone()
+                self.start_board = self.handler.clone(self.board)
+                max_player = self.max_player
 
                 # Max for White, Min for Black
-                if (self.start_position.to_move() == True):
-                    self.max_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions ,start_time )
+                if (self.handler.to_move(self.max_player) == True):
+                    self.max_value( self.start_board, max_player, self.depth, -inf, +inf, '0,', self.transpositions ,start_time )
                     ordering = self.transpositions.get('0,')
                     ordering = sorted(ordering, key=get_key, reverse=True)
                 else:
-                    self.min_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions, start_time ) 
+                    self.min_value( self.start_board, max_player, self.depth, -inf, +inf, '0,', self.transpositions, start_time ) 
                     ordering = self.transpositions.get('0,')
                     ordering = sorted(ordering, key=get_key, reverse=False)
 
@@ -96,13 +100,13 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.max_depth = depth
 
 
-    def max_value(self, othello_position, depth, alpha, beta, sequence, transpositions, start_time):
+    def max_value(self, board, max_player, depth, alpha, beta, sequence, transpositions, start_time):
         
         depth = depth - 0.5
-        moves = othello_position.get_moves()
+        moves = self.handler.get_moves(board, self.BOARD_SIZE, max_player)
 
-        if (othello_position.check_is_leaf() or depth == 0 or moves == []):
-            value = self.evaluator.evaluate(othello_position)
+        if (self.handler.check_is_leaf( board, self.BOARD_SIZE ) or depth == 0 or moves == []):
+            value = self.evaluator.evaluate(board, self.BOARD_SIZE, max_player)
             sorted_order = []
             sorted_order.append((0, value))
             transpositions[sequence] = sorted_order
@@ -133,9 +137,15 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
             if (time() - start_time >= self.time_limit):
                 break
 
-            new_position = othello_position.clone()
-            new_position.make_move(child_move)
-            value = max(value, self.min_value(new_position, depth, alpha, beta, sequence + str(move_id) + ',', transpositions, start_time))
+            new_board = self.handler.clone(board)
+            self.handler.make_move(new_board, self.BOARD_SIZE, child_move, max_player)
+
+            if (max_player == True):
+                max_player = False
+            else:
+                max_player = True
+
+            value = max(value, self.min_value(new_board, max_player, depth, alpha, beta, sequence + str(move_id) + ',', transpositions, start_time))
             sorted_order.append((move_id, value))
             
             if value >= beta:
@@ -149,14 +159,14 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         return ( value )
 
 
-    def min_value(self, othello_position, depth, alpha, beta, sequence, transpositions, start_time):
+    def min_value(self, board, max_player, depth, alpha, beta, sequence, transpositions, start_time):
 
         depth = depth - 0.5
 
-        moves = othello_position.get_moves()
+        moves = self.handler.get_moves(board, self.BOARD_SIZE, max_player)
         
-        if (othello_position.check_is_leaf() or depth == 0 or moves == []):
-            value = self.evaluator.evaluate(othello_position)
+        if ( self.handler.check_is_leaf( board, self.BOARD_SIZE ) or depth == 0 or moves == []):
+            value = self.evaluator.evaluate(board, self.BOARD_SIZE, max_player)
             sorted_order = []
             sorted_order.append((0, value))
             transpositions[sequence] = sorted_order
@@ -187,9 +197,15 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
             if (time() - start_time >= self.time_limit):
                 break
 
-            new_position = othello_position.clone()
-            new_position.make_move(child_move)
-            value = min(value, self.max_value(new_position, depth, alpha, beta, sequence + str(move_id) + ',', transpositions, start_time))
+            new_board = self.handler.clone(board)
+            self.handler.make_move(new_board, self.BOARD_SIZE, child_move, max_player)
+            
+            if (max_player == True):
+                max_player = False
+            else:
+                max_player = True
+
+            value = min(value, self.max_value(new_board, max_player, depth, alpha, beta, sequence + str(move_id) + ',', transpositions, start_time))
             sorted_order.append((move_id, value))
             
             if value <= alpha:
