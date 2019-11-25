@@ -3,13 +3,19 @@ from CountingEvaluator import CountingEvaluator
 from HeuristicsEvaluator import HeuristicsEvaluator
 from OthelloAction import OthelloAction
 from OthelloPosition import OthelloPosition
-from sys import argv
+from sys import argv, stderr, exit
 
 def main():
     
     # Parsing and checking cli args
     if (len(argv) != 3):
-        print("Usage: Othello.py <gameState> <time limit>")
+        print("Usage: Othello.py <gameState> <time limit>", file=stderr)
+        exit()
+
+    if (len(argv[1])!= 65 ):
+        print("Usage: game state string has to be 65 chars", file=stderr)
+        exit()
+
     
     position = OthelloPosition(argv[1])
     algorithm = MiniMaxAlgorithm()
