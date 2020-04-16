@@ -2,6 +2,7 @@ from OthelloAlgorithm import OthelloAlgorithm
 from OthelloAction import OthelloAction
 from math import inf
 from time import time
+import logging
 
 class MiniMaxAlgorithm(OthelloAlgorithm):
 
@@ -12,6 +13,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.depth_step = 1
         self.time_limit = 10
         self.transpositions = {}
+        self.logger = {}
 
 
 
@@ -20,13 +22,17 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
     def set_time_limit(self, time_limit):
         self.time_limit = time_limit
+    
+    def set_logger(self, logger):
+        self.logger = logger
 
     def evaluate(self, othello_position):
 
         # Helper function for tuple sorting
         def get_key(item):
-                return (item[1])
+            return (item[1])
 
+    
 
         best_move_at_depth = []
         start_time = time()
@@ -41,10 +47,12 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
                 # Max for White, Min for Black
                 if (self.start_position.to_move() == True):
+                    self.logger.debug("step into max value")
                     self.max_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions ,start_time )
                     ordering = self.transpositions.get('0,')
                     ordering = sorted(ordering, key=get_key, reverse=True)
                 else:
+                    self.logger.debug("step into min value")
                     self.min_value( self.start_position, self.depth, -inf, +inf, '0,', self.transpositions, start_time ) 
                     ordering = self.transpositions.get('0,')
                     ordering = sorted(ordering, key=get_key, reverse=False)
@@ -61,14 +69,16 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
                 
                 # set new search depth
                 self.depth = self.depth + self.depth_step
+
+                print(self.depth)
+                print(time() - start_time)
         
             for i in best_move_at_depth:
                 if (isinstance(i, (OthelloAction)) == True):
                     result = i
         else:
             result = 'pass'
-        #print(self.depth)
-        #print(time() - start_time)
+        
 
         return (result)
 
@@ -78,8 +88,9 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
     def max_value(self, othello_position, depth, alpha, beta, sequence, transpositions, start_time):
         
-        depth = depth - 0.5
+        depth = depth - 1
         moves = othello_position.get_moves()
+        print(len(moves))
 
         if (othello_position.check_is_leaf() or depth == 0 or moves == []):
             value = self.evaluator.evaluate(othello_position)
@@ -131,9 +142,10 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
 
     def min_value(self, othello_position, depth, alpha, beta, sequence, transpositions, start_time):
 
-        depth = depth - 0.5
+        depth = depth - 1
 
         moves = othello_position.get_moves()
+        self.logger.debug("number of moves in min_value %d" , len(moves) )
         
         if (othello_position.check_is_leaf() or depth == 0 or moves == []):
             value = self.evaluator.evaluate(othello_position)
