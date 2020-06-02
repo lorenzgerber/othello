@@ -54,19 +54,19 @@ class HeuristicsEvaluator(OthelloEvaluator):
 
     def __check_edges(self, color):
         points_sum = 0
-        for i in range(0, self.position.BOARD_SIZE - 1):
+        for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[0][i] == color ):
                 points_sum += self.value_edge
 
-        for i in range(0, self.position.BOARD_SIZE - 1):
+        for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[self.position.BOARD_SIZE-1][i] == color ):
                 points_sum += self.value_edge
 
-        for i in range(0, self.position.BOARD_SIZE - 1):
+        for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[i][0] == color ):
                 points_sum += self.value_edge
 
-        for i in range(0, self.position.BOARD_SIZE - 1):
+        for i in range(2, self.position.BOARD_SIZE - 3):
             if ( self.position.board[i][self.position.BOARD_SIZE-1] == color ):
                 points_sum += self.value_edge
         
