@@ -32,8 +32,6 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         def get_key(item):
             return (item[1])
 
-    
-
         best_move_at_depth = []
         start_time = time()
 
@@ -70,8 +68,8 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
                 # set new search depth
                 self.depth = self.depth + self.depth_step
 
-                print(self.depth)
-                print(time() - start_time)
+                self.logger.debug("current depth %d", self.depth)
+                self.logger.debug("current run time %d", time() - start_time)
         
             for i in best_move_at_depth:
                 if (isinstance(i, (OthelloAction)) == True):
@@ -90,7 +88,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         
         depth = depth - 1
         moves = othello_position.get_moves()
-        print(len(moves))
+        self.logger.debug("number of moves in max_value %d" , len(moves) )
 
         if (othello_position.check_is_leaf() or depth == 0 or moves == []):
             value = self.evaluator.evaluate(othello_position)
