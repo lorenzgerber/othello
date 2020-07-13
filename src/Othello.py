@@ -8,12 +8,12 @@ import logging
 
 def main():
 
-    # create logger
+    # create logger 
     logger = logging.getLogger('othello')
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(logging.CRITICAL) 
     # create console handler and set level to debug
     ch = logging.StreamHandler()
-    ch.setLevel(logging.ERROR)
+    ch.setLevel(logging.CRITICAL)
 
     # create formatter
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -37,7 +37,7 @@ def main():
     position = OthelloPosition(argv[1])
     algorithm = MiniMaxAlgorithm()
     algorithm.set_logger(logger)
-    algorithm.set_search_depth(40)
+    algorithm.set_search_depth(400)
     algorithm.set_time_limit(int(argv[2]))
     algorithm.set_evaluator(HeuristicsEvaluator())
     action = algorithm.evaluate(position)

@@ -19,7 +19,7 @@ class OthelloPosition(object):
         player is to move. The remaining characters should be E (for empty), O (for white markers), or X (for black
         markers).
         """
-        self.BOARD_SIZE = 8
+        self.BOARD_SIZE = 64
         self.maxPlayer = True
         self.board = np.array([['E' for col in range(self.BOARD_SIZE + 2)] for row in range(self.BOARD_SIZE + 2)])
         if len(list(board_str)) >= 65:

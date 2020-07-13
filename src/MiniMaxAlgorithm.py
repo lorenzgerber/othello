@@ -7,11 +7,12 @@ import logging
 class MiniMaxAlgorithm(OthelloAlgorithm):
 
     def __init__(self):
+        self.depth_level = 1
         self.depth = 1
         self.max_depth = inf
         self.tree = []
         self.depth_step = 1
-        self.time_limit = 10
+        self.time_limit = 100000
         self.transpositions = {}
         self.logger = {}
 
@@ -38,7 +39,9 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         # make a list for the result of every depth search
         moves = othello_position.get_moves()
         if ( moves != []):
-            while self.depth <= self.max_depth:
+            while self.depth_level <= self.max_depth:
+
+                self.depth = self.depth_level
                 
                 # clone the position as it will be overwritten else
                 self.start_position = othello_position.clone()
@@ -66,7 +69,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
                     break
                 
                 # set new search depth
-                self.depth = self.depth + self.depth_step
+                self.depth_level = self.depth_level + self.depth_step
 
                 self.logger.debug("current depth %d", self.depth)
                 self.logger.debug("current run time %d", time() - start_time)
@@ -77,7 +80,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         else:
             result = 'pass'
         
-
+        self.logger.debug("search until depth level %d", self.depth_level)
         return (result)
 
     def set_search_depth(self, depth):
@@ -91,6 +94,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.logger.debug("number of moves in max_value %d" , len(moves) )
 
         if (othello_position.check_is_leaf() or depth == 0 or moves == []):
+            self.logger.debug("we hit the bottom in Min")
             value = self.evaluator.evaluate(othello_position)
             sorted_order = []
             sorted_order.append((0, value))
@@ -146,6 +150,7 @@ class MiniMaxAlgorithm(OthelloAlgorithm):
         self.logger.debug("number of moves in min_value %d" , len(moves) )
         
         if (othello_position.check_is_leaf() or depth == 0 or moves == []):
+            self.logger.debug("we hit the bottom in Min")
             value = self.evaluator.evaluate(othello_position)
             sorted_order = []
             sorted_order.append((0, value))
