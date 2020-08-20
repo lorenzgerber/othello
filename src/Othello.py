@@ -8,21 +8,14 @@ import logging
 
 def main():
 
-    # create logger 
+    # setup logging 
     logger = logging.getLogger('othello')
     logger.setLevel(logging.CRITICAL) 
-    # create console handler and set level to debug
-    ch = logging.StreamHandler()
-    ch.setLevel(logging.CRITICAL)
-
-    # create formatter
+    consoleHandler = logging.StreamHandler()
+    consoleHandler.setLevel(logging.CRITICAL)
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    # add formatter to ch
-    ch.setFormatter(formatter)
-
-    # add ch to logger
-    logger.addHandler(ch)
+    consoleHandler.setFormatter(formatter)
+    logger.addHandler(consoleHandler)
 
     # Parsing and checking cli args
     if (len(argv) != 3):
